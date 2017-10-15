@@ -1,0 +1,8 @@
+FROM docker.elastic.co/elasticsearch/elasticsearch:5.5.2
+
+RUN bin/elasticsearch-plugin install analysis-icu
+RUN bin/elasticsearch-plugin install org.wikimedia.search:extra:5.5.2.3
+RUN bin/elasticsearch-plugin install org.wikimedia.search.highlighter:experimental-highlighter-elasticsearch-plugin:5.5.2
+
+# RUN bin/plugin install --batch royrusso/elasticsearch-HQ
+# RUN bin/plugin install --batch lmenezes/elasticsearch-kopf

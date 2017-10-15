@@ -1,0 +1,728 @@
+{
+  "content": {
+    "page": {
+      "index": {
+        "refresh_interval": "30s",
+        "indexing": {
+          "slowlog": {
+            "threshold": {
+              "index": {
+                "warn": "10s",
+                "trace": "-1",
+                "debug": "2s",
+                "info": "5s"
+              }
+            }
+          }
+        },
+        "auto_expand_replicas": "0-2",
+        "provided_name": "simplewiki_content_1499815125",
+        "query": {
+          "default_field": "all"
+        },
+        "creation_date": "1499815125987",
+        "analysis": {
+          "filter": {
+            "asciifolding_preserve": {
+              "type": "asciifolding",
+              "preserve_original": "true"
+            },
+            "prefix_ngram_filter": {
+              "type": "edgeNGram",
+              "max_gram": "255"
+            },
+            "suggest_shingle": {
+              "max_shingle_size": "3",
+              "min_shingle_size": "2",
+              "output_unigrams": "true",
+              "type": "shingle"
+            },
+            "lowercase": {
+              "type": "lowercase"
+            },
+            "aggressive_splitting": {
+              "type": "word_delimiter",
+              "preserve_original": "false",
+              "stem_english_possessive": "false"
+            },
+            "icu_nfkc_normalization": {
+              "name": "nfkc",
+              "type": "icu_normalizer"
+            },
+            "asciifolding": {
+              "type": "asciifolding",
+              "preserve_original": "false"
+            },
+            "possessive_english": {
+              "type": "stemmer",
+              "language": "possessive_english"
+            },
+            "icu_normalizer": {
+              "name": "nfkc_cf",
+              "type": "icu_normalizer"
+            },
+            "custom_stem": {
+              "type": "stemmer_override",
+              "rules": "guidelines => guideline"
+            },
+            "icu_folding": {
+              "type": "icu_folding"
+            },
+            "truncate_keyword": {
+              "length": "5000",
+              "type": "truncate"
+            }
+          },
+          "char_filter": {
+            "near_space_flattener": {
+              "type": "mapping",
+              "mappings": [
+                "'=>\\u0020",
+                "\\u2019=>\\u0020",
+                "\\u02BC=>\\u0020",
+                "_=>\\u0020",
+                "-=>\\u0020"
+              ]
+            },
+            "word_break_helper_source_text": {
+              "type": "mapping",
+              "mappings": [
+                "_=>\\u0020",
+                ".=>\\u0020",
+                "(=>\\u0020",
+                ")=>\\u0020",
+                ":=>\\u0020"
+              ]
+            },
+            "word_break_helper": {
+              "type": "mapping",
+              "mappings": [
+                "_=>\\u0020",
+                ".=>\\u0020",
+                "(=>\\u0020",
+                ")=>\\u0020"
+              ]
+            }
+          },
+          "analyzer": {
+            "prefix_asciifolding": {
+              "filter": [
+                "icu_normalizer",
+                "icu_folding"
+              ],
+              "char_filter": [
+                "near_space_flattener"
+              ],
+              "type": "custom",
+              "tokenizer": "prefix"
+            },
+            "source_text_plain": {
+              "filter": [
+                "icu_normalizer"
+              ],
+              "char_filter": [
+                "word_break_helper_source_text"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "lowercase_keyword": {
+              "filter": [
+                "truncate_keyword",
+                "icu_normalizer",
+                "preserve_original_recorder",
+                "icu_folding",
+                "preserve_original"
+              ],
+              "type": "custom",
+              "tokenizer": "no_splitting"
+            },
+            "prefix": {
+              "filter": [
+                "icu_normalizer"
+              ],
+              "char_filter": [
+                "near_space_flattener"
+              ],
+              "type": "custom",
+              "tokenizer": "prefix"
+            },
+            "short_text": {
+              "filter": [
+                "icu_normalizer",
+                "aggressive_splitting",
+                "preserve_original_recorder",
+                "icu_folding",
+                "preserve_original"
+              ],
+              "type": "custom",
+              "tokenizer": "whitespace"
+            },
+            "token_reverse": {
+              "filter": [
+                "reverse"
+              ],
+              "type": "custom",
+              "tokenizer": "no_splitting"
+            },
+            "suggest": {
+              "filter": [
+                "icu_normalizer",
+                "suggest_shingle"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "source_text_plain_search": {
+              "filter": [
+                "icu_normalizer"
+              ],
+              "char_filter": [
+                "word_break_helper_source_text"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "suggest_reverse": {
+              "filter": [
+                "icu_normalizer",
+                "suggest_shingle",
+                "reverse"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "trigram": {
+              "filter": [
+                "icu_normalizer"
+              ],
+              "type": "custom",
+              "tokenizer": "trigram"
+            },
+            "short_text_search": {
+              "filter": [
+                "icu_normalizer",
+                "aggressive_splitting"
+              ],
+              "type": "custom",
+              "tokenizer": "whitespace"
+            },
+            "plain": {
+              "filter": [
+                "icu_normalizer",
+                "preserve_original_recorder",
+                "icu_folding",
+                "preserve_original"
+              ],
+              "char_filter": [
+                "word_break_helper"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "plain_search": {
+              "filter": [
+                "icu_normalizer"
+              ],
+              "char_filter": [
+                "word_break_helper"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "text": {
+              "filter": [
+                "aggressive_splitting",
+                "possessive_english",
+                "icu_normalizer",
+                "stop",
+                "icu_folding",
+                "kstem",
+                "custom_stem"
+              ],
+              "char_filter": [
+                "word_break_helper"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "text_search": {
+              "filter": [
+                "aggressive_splitting",
+                "possessive_english",
+                "icu_normalizer",
+                "stop",
+                "icu_folding",
+                "kstem",
+                "custom_stem"
+              ],
+              "char_filter": [
+                "word_break_helper"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "keyword": {
+              "filter": [
+                "truncate_keyword"
+              ],
+              "type": "custom",
+              "tokenizer": "no_splitting"
+            },
+            "word_prefix": {
+              "filter": [
+                "icu_normalizer",
+                "prefix_ngram_filter"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "near_match_asciifolding": {
+              "filter": [
+                "truncate_keyword",
+                "icu_normalizer",
+                "icu_folding"
+              ],
+              "char_filter": [
+                "near_space_flattener"
+              ],
+              "type": "custom",
+              "tokenizer": "no_splitting"
+            },
+            "near_match": {
+              "filter": [
+                "icu_normalizer"
+              ],
+              "char_filter": [
+                "near_space_flattener"
+              ],
+              "type": "custom",
+              "tokenizer": "no_splitting"
+            }
+          },
+          "tokenizer": {
+            "no_splitting": {
+              "type": "keyword"
+            },
+            "trigram": {
+              "type": "nGram",
+              "min_gram": "3",
+              "max_gram": "3"
+            },
+            "prefix": {
+              "type": "edgeNGram",
+              "max_gram": "255"
+            }
+          }
+        },
+        "number_of_replicas": "2",
+        "uuid": "hWOBgPLrQiWG2DsguiXSLA",
+        "version": {
+          "created": "5030299"
+        },
+        "routing": {
+          "allocation": {
+            "total_shards_per_node": "-1"
+          }
+        },
+        "search": {
+          "slowlog": {
+            "threshold": {
+              "fetch": {
+                "warn": "1s",
+                "trace": "200ms",
+                "debug": "500ms",
+                "info": "800ms"
+              }
+            }
+          }
+        },
+        "number_of_shards": "1",
+        "similarity": {
+          "default": {
+            "type": "BM25"
+          },
+          "arrays": {
+            "type": "BM25",
+            "b": "0.3",
+            "k1": "1.2"
+          }
+        },
+        "merge": {
+          "scheduler": {
+            "max_thread_count": "1"
+          },
+          "policy": {
+            "max_merge_at_once": "5",
+            "reclaim_deletes_weight": "3",
+            "max_merged_segment": "25g",
+            "segments_per_tier": "5"
+          }
+        }
+      }
+    }
+  },
+  "general": {
+    "page": {
+      "index": {
+        "refresh_interval": "30s",
+        "indexing": {
+          "slowlog": {
+            "threshold": {
+              "index": {
+                "warn": "10s",
+                "trace": "-1",
+                "debug": "2s",
+                "info": "5s"
+              }
+            }
+          }
+        },
+        "auto_expand_replicas": "0-2",
+        "provided_name": "simplewiki_general_1499817051",
+        "query": {
+          "default_field": "all"
+        },
+        "creation_date": "1499817051614",
+        "analysis": {
+          "filter": {
+            "asciifolding_preserve": {
+              "type": "asciifolding",
+              "preserve_original": "true"
+            },
+            "prefix_ngram_filter": {
+              "type": "edgeNGram",
+              "max_gram": "255"
+            },
+            "suggest_shingle": {
+              "max_shingle_size": "3",
+              "min_shingle_size": "2",
+              "output_unigrams": "true",
+              "type": "shingle"
+            },
+            "lowercase": {
+              "type": "lowercase"
+            },
+            "aggressive_splitting": {
+              "type": "word_delimiter",
+              "preserve_original": "false",
+              "stem_english_possessive": "false"
+            },
+            "icu_nfkc_normalization": {
+              "name": "nfkc",
+              "type": "icu_normalizer"
+            },
+            "asciifolding": {
+              "type": "asciifolding",
+              "preserve_original": "false"
+            },
+            "possessive_english": {
+              "type": "stemmer",
+              "language": "possessive_english"
+            },
+            "icu_normalizer": {
+              "name": "nfkc_cf",
+              "type": "icu_normalizer"
+            },
+            "custom_stem": {
+              "type": "stemmer_override",
+              "rules": "guidelines => guideline"
+            },
+            "icu_folding": {
+              "type": "icu_folding"
+            },
+            "truncate_keyword": {
+              "length": "5000",
+              "type": "truncate"
+            }
+          },
+          "char_filter": {
+            "near_space_flattener": {
+              "type": "mapping",
+              "mappings": [
+                "'=>\\u0020",
+                "\\u2019=>\\u0020",
+                "\\u02BC=>\\u0020",
+                "_=>\\u0020",
+                "-=>\\u0020"
+              ]
+            },
+            "word_break_helper_source_text": {
+              "type": "mapping",
+              "mappings": [
+                "_=>\\u0020",
+                ".=>\\u0020",
+                "(=>\\u0020",
+                ")=>\\u0020",
+                ":=>\\u0020"
+              ]
+            },
+            "word_break_helper": {
+              "type": "mapping",
+              "mappings": [
+                "_=>\\u0020",
+                ".=>\\u0020",
+                "(=>\\u0020",
+                ")=>\\u0020"
+              ]
+            }
+          },
+          "analyzer": {
+            "prefix_asciifolding": {
+              "filter": [
+                "icu_normalizer",
+                "icu_folding"
+              ],
+              "char_filter": [
+                "near_space_flattener"
+              ],
+              "type": "custom",
+              "tokenizer": "prefix"
+            },
+            "source_text_plain": {
+              "filter": [
+                "icu_normalizer"
+              ],
+              "char_filter": [
+                "word_break_helper_source_text"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "lowercase_keyword": {
+              "filter": [
+                "truncate_keyword",
+                "icu_normalizer",
+                "preserve_original_recorder",
+                "icu_folding",
+                "preserve_original"
+              ],
+              "type": "custom",
+              "tokenizer": "no_splitting"
+            },
+            "prefix": {
+              "filter": [
+                "icu_normalizer"
+              ],
+              "char_filter": [
+                "near_space_flattener"
+              ],
+              "type": "custom",
+              "tokenizer": "prefix"
+            },
+            "short_text": {
+              "filter": [
+                "icu_normalizer",
+                "aggressive_splitting",
+                "preserve_original_recorder",
+                "icu_folding",
+                "preserve_original"
+              ],
+              "type": "custom",
+              "tokenizer": "whitespace"
+            },
+            "token_reverse": {
+              "filter": [
+                "reverse"
+              ],
+              "type": "custom",
+              "tokenizer": "no_splitting"
+            },
+            "suggest": {
+              "filter": [
+                "icu_normalizer",
+                "suggest_shingle"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "source_text_plain_search": {
+              "filter": [
+                "icu_normalizer"
+              ],
+              "char_filter": [
+                "word_break_helper_source_text"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "suggest_reverse": {
+              "filter": [
+                "icu_normalizer",
+                "suggest_shingle",
+                "reverse"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "trigram": {
+              "filter": [
+                "icu_normalizer"
+              ],
+              "type": "custom",
+              "tokenizer": "trigram"
+            },
+            "short_text_search": {
+              "filter": [
+                "icu_normalizer",
+                "aggressive_splitting"
+              ],
+              "type": "custom",
+              "tokenizer": "whitespace"
+            },
+            "plain": {
+              "filter": [
+                "icu_normalizer",
+                "preserve_original_recorder",
+                "icu_folding",
+                "preserve_original"
+              ],
+              "char_filter": [
+                "word_break_helper"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "plain_search": {
+              "filter": [
+                "icu_normalizer"
+              ],
+              "char_filter": [
+                "word_break_helper"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "text": {
+              "filter": [
+                "aggressive_splitting",
+                "possessive_english",
+                "icu_normalizer",
+                "stop",
+                "icu_folding",
+                "kstem",
+                "custom_stem"
+              ],
+              "char_filter": [
+                "word_break_helper"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "text_search": {
+              "filter": [
+                "aggressive_splitting",
+                "possessive_english",
+                "icu_normalizer",
+                "stop",
+                "icu_folding",
+                "kstem",
+                "custom_stem"
+              ],
+              "char_filter": [
+                "word_break_helper"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "keyword": {
+              "filter": [
+                "truncate_keyword"
+              ],
+              "type": "custom",
+              "tokenizer": "no_splitting"
+            },
+            "word_prefix": {
+              "filter": [
+                "icu_normalizer",
+                "prefix_ngram_filter"
+              ],
+              "type": "custom",
+              "tokenizer": "standard"
+            },
+            "near_match_asciifolding": {
+              "filter": [
+                "truncate_keyword",
+                "icu_normalizer",
+                "icu_folding"
+              ],
+              "char_filter": [
+                "near_space_flattener"
+              ],
+              "type": "custom",
+              "tokenizer": "no_splitting"
+            },
+            "near_match": {
+              "filter": [
+                "icu_normalizer"
+              ],
+              "char_filter": [
+                "near_space_flattener"
+              ],
+              "type": "custom",
+              "tokenizer": "no_splitting"
+            }
+          },
+          "tokenizer": {
+            "no_splitting": {
+              "type": "keyword"
+            },
+            "trigram": {
+              "type": "nGram",
+              "min_gram": "3",
+              "max_gram": "3"
+            },
+            "prefix": {
+              "type": "edgeNGram",
+              "max_gram": "255"
+            }
+          }
+        },
+        "number_of_replicas": "2",
+        "uuid": "hjaMS7vdQHCJyoQIuw54YQ",
+        "version": {
+          "created": "5030299"
+        },
+        "routing": {
+          "allocation": {
+            "total_shards_per_node": "-1"
+          }
+        },
+        "search": {
+          "slowlog": {
+            "threshold": {
+              "fetch": {
+                "warn": "1s",
+                "trace": "200ms",
+                "debug": "500ms",
+                "info": "800ms"
+              }
+            }
+          }
+        },
+        "number_of_shards": "1",
+        "similarity": {
+          "default": {
+            "type": "BM25"
+          },
+          "arrays": {
+            "type": "BM25",
+            "b": "0.3",
+            "k1": "1.2"
+          }
+        },
+        "merge": {
+          "scheduler": {
+            "max_thread_count": "1"
+          },
+          "policy": {
+            "max_merge_at_once": "10",
+            "reclaim_deletes_weight": "2",
+            "max_merged_segment": "5g",
+            "segments_per_tier": "10"
+          }
+        }
+      }
+    }
+  }
+}

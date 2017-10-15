@@ -1,0 +1,49 @@
+
+version: '2.3'
+
+networks:
+  esnet:
+
+volumes:
+  esdata.v2.4.6:
+    driver: local
+
+services:
+  esmaster:
+    # image: remstef/elasticsearch:2.4.6
+    # build:
+    #   context: ./
+    #   dockerfile: Dockerfile-2
+    image: elasticsearch:2.4.6
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+    volumes:
+      - esdata.v2.4.6:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - esnet
+    healthcheck:
+      test: curl --silent --fail -u elastic:changeme 'localhost:9200/_cluster/health' || exit 1
+      interval: 5s
+      timeout: 2s
+      retries: 12
+
+  kibana:
+    # image: docker.elastic.co/kibana/kibana:5.6.3
+    image: kibana:4
+    ports:
+      - 80:5601
+    environment:
+      ELASTICSEARCH_URL: http://esmaster:9200
+    networks:
+      - esnet
+    depends_on:
+      esmaster:
+        condition: service_healthy

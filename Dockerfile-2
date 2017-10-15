@@ -1,0 +1,6 @@
+FROM elasticsearch:2.4.6
+
+RUN bin/plugin install analysis-icu
+
+# RUN bin/plugin install --batch royrusso/elasticsearch-HQ
+# RUN bin/plugin install --batch lmenezes/elasticsearch-kopf

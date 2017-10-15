@@ -1,0 +1,48 @@
+##
+# see https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+##
+version: '2.3'
+
+networks:
+  esnet:
+
+services:
+  esmaster:
+    image: custom-elasticsearch:5.5.2
+    build:
+      context: ./
+      dockerfile: Dockerfile-5
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+    volumes:
+      - ${PWD}/data.v5.5.2:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      esnet:
+        aliases:
+          - elasticsearch
+    healthcheck:
+      test: curl --silent --fail 'localhost:9200/_cluster/health' || exit 1
+      interval: 5s
+      timeout: 2s
+      retries: 12
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.5.2
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://esmaster:9200
+    networks:
+      - esnet
+    depends_on:
+      esmaster:
+        condition: service_healthy

@@ -1,0 +1,72 @@
+# notes
+
+# note that security is disabled  xpack.security.enabled=false, if you leave it enabled, add "-u elastic:changeme" to each curl command
+
+
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET foo/_search?q=*
+
+PUT foo/bar/1
+{
+  "baz": "hello world"
+
+}
+
+POST foo/bar/
+{
+  "baz": "brave new world"
+}
+
+GET _cat/indices?v
+
+GET /foo/
+
+GET /_analyze
+{
+  "analyzer":"keyword",
+  "text": "hello world"
+}
+
+
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET _cat/indices?v
+
+GET foo/_search?q=*
+
+GET enwikiquote1/_search?q=*
+
+GET enwikiquote1/_search?q=Anthony Scaramuci&_source_include=title,category
+
+
+PUT foo/bar/1
+{
+  "baz": "hello world"
+
+}
+
+POST foo/bar/
+{
+  "baz": "brave new world"
+}
+
+GET _cat/indices?v
+
+GET /foo/
+
+GET /_analyze
+{
+  "analyzer":"keyword",
+  "text": "hello world"
+}
