@@ -40,6 +40,7 @@ curl -s 'https://'$site'/w/api.php?action=cirrus-settings-dump&format=json&forma
 curl -s 'https://'$site'/w/api.php?action=cirrus-mapping-dump&format=json&formatversion=2' > mappings.json
 
 # create index with settings (reformat cirrus dump to elasticsearch v5.5.2 settings)
+# use settings from the creation of this script: cat settings201710.json
 cat settings.json |
   jq '{
     settings: {
@@ -54,6 +55,7 @@ cat settings.json |
   curl -XPUT $es/$index?pretty -d @-
 
 # add mappings to index (reformat cirrus dump to elasticsearch v5.5.2 mappings)
+# use mappings from the creation of this script: cat mappings201710.json
 cat mappings.json |
   sed 's/"index_analyzer"/"analyzer"/' |
   sed 's/"position_offset_gap"/"position_increment_gap"/' |
