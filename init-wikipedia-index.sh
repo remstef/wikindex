@@ -19,25 +19,26 @@ site=simple.wikipedia.org
 # site=en.wikiquote.org
 
 # set up english wikipedia
-index=enwiki
-site=en.wikipedia.org
+# index=enwiki
+# site=en.wikipedia.org
 
+# the dump file
 dump=$index-20171009-cirrussearch-content.json.gz
 
 # download index (https://dumps.wikimedia.org/other/cirrussearch/)
-curl -s 'https://dumps.wikimedia.org/other/cirrussearch/current/'$dump > $dump
+curl 'https://dumps.wikimedia.org/other/cirrussearch/current/'$dump > $dump
 
 # use dump from the creation of this script
 # curl -s 'https://dumps.wikimedia.org/other/cirrussearch/20171009/'$dump > $dump
 
 # init index
-curl -XDELETE $es/$index?pretty
+curl -s -XDELETE $es/$index?pretty
 
 # dump current settings
-curl -s 'https://'$site'/w/api.php?action=cirrus-settings-dump&format=json&formatversion=2' > settings.json
+curl 'https://'$site'/w/api.php?action=cirrus-settings-dump&format=json&formatversion=2' > settings.json
 
 # dump current mappings
-curl -s 'https://'$site'/w/api.php?action=cirrus-mapping-dump&format=json&formatversion=2' > mappings.json
+curl 'https://'$site'/w/api.php?action=cirrus-mapping-dump&format=json&formatversion=2' > mappings.json
 
 # create index with settings (reformat cirrus dump to elasticsearch v5.5.2 settings)
 # use settings from the creation of this script: cat settings201710.json
@@ -52,7 +53,7 @@ cat settings.json |
     number_of_shards: 1,
     number_of_replicas: 0
   }' |
-  curl -XPUT $es/$index?pretty -d @-
+  curl -H 'Content-Type: application/json' -XPUT $es/$index?pretty -d @-
 
 # add mappings to index (reformat cirrus dump to elasticsearch v5.5.2 mappings)
 # use mappings from the creation of this script: cat mappings201710.json
@@ -60,14 +61,13 @@ cat mappings.json |
   sed 's/"index_analyzer"/"analyzer"/' |
   sed 's/"position_offset_gap"/"position_increment_gap"/' |
   jq '.content.page' |
-  curl -XPUT $es/$index/_mapping/page?pretty -d @-
+  curl -H 'Content-Type: application/json' -XPUT $es/$index/_mapping/page?pretty -d @-
 
 # extract the dump and prepare data chunks
-mkdir -p chunks && cd chunks
-gzcat $dump | split -a 10 -l 500 - $index
+mkdir -p chunks && gzcat $dump | split -a 10 -l 500 - chunks/${index}_
 
 # import the data
-for file in *; do
+for file in chunks/*; do
   echo -n "${file}:  "
   took=$(curl -H 'Content-Type: application/json' -s -XPOST $es/$index/_bulk?pretty --data-binary @$file |
     grep took | cut -d':' -f 2 | cut -d',' -f 1)
