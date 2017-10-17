@@ -11,19 +11,24 @@ docker-compose up -d
 es=localhost:9200
 
 # set up simplewikipedia
-index=simplewiki
+wikiname=simplewiki
 site=simple.wikipedia.org
 
 # set up english wiki quote
-# index=enwikiquote
+# wikiname=enwikiquote
 # site=en.wikiquote.org
 
 # set up english wikipedia
-# index=enwiki
+# wikiname=enwiki
 # site=en.wikipedia.org
 
-# the dump file
-dump=$index-20171009-cirrussearch-content.json.gz
+# call the index same as the wiki name
+index=$wikiname
+
+# the content dump file
+dump=$wikiname-20171009-cirrussearch-content.json.gz
+# or the general dump file, which contains user discussions and so on
+# dump=$index-20171009-cirrussearch-general.json.gz
 
 # download index (https://dumps.wikimedia.org/other/cirrussearch/)
 curl 'https://dumps.wikimedia.org/other/cirrussearch/current/'$dump > $dump
@@ -67,7 +72,7 @@ cat mappings.json |
 mkdir -p chunks && gzcat $dump | split -a 10 -l 500 - chunks/${index}_
 
 # import the data
-for file in chunks/*; do
+for file in chunks/${index}_*; do
   echo -n "${file}:  "
   took=$(curl -H 'Content-Type: application/json' -s -XPOST $es/$index/_bulk?pretty --data-binary @$file |
     grep took | cut -d':' -f 2 | cut -d',' -f 1)
