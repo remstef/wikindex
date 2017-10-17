@@ -76,14 +76,10 @@ for file in chunks/*; do
 done
 
 # speed up, enter in a different terminal
-# curl -XPUT "$es/$index/_settings?pretty" -d '{
-#     "index" : {
-#         "refresh_interval" : -1
-#     }
-# }'
+# curl -XPUT "$es/$index/_settings?pretty" -d '{ "index" : { "refresh_interval" : -1 } }'
 
 # monitor progress, enter in a different terminal
 # date; curl $es/$index/_refresh?pretty; curl $es/$index/_count?pretty
 
-# is the index fixed? optimize it!
-# _optimize?max_num_segments=1
+# is the index fixed? optimize it! Note: this is bad if the index is updated!
+# curl -XPOST "$es/$index/_forcemerge?max_num_segments=1"

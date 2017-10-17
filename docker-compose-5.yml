@@ -10,21 +10,27 @@ services:
   esmaster:
     image: custom-elasticsearch:5.5.2
     build:
-      context: ./
-      dockerfile: Dockerfile-5
+      context: es
+      dockerfile: Dockerfile
     environment:
-      - bootstrap.memory_lock=true
+      - "cluster.name=escluster"
+      - "bootstrap.memory_lock=true"
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=false
+      - "xpack.security.enabled=false"
+      - "http.host=0.0.0.0"
+      - "transport.host=0.0.0.0"
+      # - discovery.type=single-node
     ulimits:
       memlock:
         soft: -1
         hard: -1
     mem_limit: 1g
     volumes:
-      - ${PWD}/data.v5.5.2:/usr/share/elasticsearch/data
+      - ${PWD}/esdata:/usr/share/elasticsearch/data
+      #- ${PWD}/esindex/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
       - 9200:9200
+      - 9300:9300
     networks:
       esnet:
         aliases:
@@ -40,7 +46,7 @@ services:
     ports:
       - 5601:5601
     environment:
-      ELASTICSEARCH_URL: http://esmaster:9200
+      ELASTICSEARCH_URL: http://elasticsearch:9200
     networks:
       - esnet
     depends_on:
