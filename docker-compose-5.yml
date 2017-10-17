@@ -27,7 +27,7 @@ services:
     mem_limit: 1g
     volumes:
       - ${PWD}/esdata:/usr/share/elasticsearch/data
-      #- ${PWD}/esindex/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      #- ${PWD}/es/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
       - 9200:9200
       - 9300:9300
